@@ -1,34 +1,89 @@
-def selectionSort(lista, chave=None, reverso=False):
+import time
 
-    dados = lista.copy()
-    n = len(dados)
 
-    def valor(item):
-        return item[chave] if chave else item
+def selection_sort(dados, coluna):
 
-    for i in range(n - 1):
-        indice = i
+    dados = dados.copy()
 
-        for j in range(i + 1, n):
-            if not reverso:
-                if valor(dados[j]) < valor(dados[indice]):
-                    indice = j
-            else:
-                if valor(dados[j]) > valor(dados[indice]):
-                    indice = j
+    for i in range(len(dados) - 1):
 
-        dados[i], dados[indice] = dados[indice], dados[i]
+        menor = i
+
+        for j in range(i + 1, len(dados)):
+
+            if dados[j][coluna] < dados[menor][coluna]:
+                menor = j
+
+        dados[i], dados[menor] = dados[menor], dados[i]
 
     return dados
 
 
-if __name__ == '__main__':
-    numeros = [5, 2, 8, 1, 9, 3]
-    print(selectionSort(numeros))
+inicio = time.perf_counter()
 
-    pessoas = [
-        {'nome': 'Ana', 'idade': 30},
-        {'nome': 'Bia', 'idade': 22}
-    ]
+resultado_inverso = selection_sort(dados, coluna)
 
-    print(selectionSort(pessoas, chave='idade'))
+fim = time.perf_counter()
+
+tempo_inverso = fim - inicio
+
+
+inicio = time.perf_counter()
+
+resultado_aleatorio = selection_sort(dados_aleatorios, coluna)
+
+fim = time.perf_counter()
+
+tempo_aleatorio = fim - inicio
+
+
+resultados.append([
+    "Selection Sort",
+    tempo_inverso,
+    tempo_aleatorio
+])
+
+
+diferenca = tempo_inverso - tempo_aleatorio
+
+
+print("SELECTION SORT")
+print()
+
+print(
+    f"Simulação 1 - Inversamente ordenada: "
+    f"{tempo_inverso:.2e} segundos"
+)
+
+print(
+    f"Simulação 2 - Aleatória:              "
+    f"{tempo_aleatorio:.2e} segundos"
+)
+
+print()
+
+print(
+    f"Diferença entre os tempos: "
+    f"{abs(diferenca):.2e} segundos"
+)
+
+
+if diferenca > 0:
+
+    print(
+        f"O algoritmo gastou {diferenca:.2e} segundos a mais "
+        f"na situação inversamente ordenada."
+    )
+
+elif diferenca < 0:
+
+    print(
+        f"O algoritmo gastou {abs(diferenca):.2e} segundos a mais "
+        f"na situação aleatória."
+    )
+
+else:
+
+    print(
+        "O algoritmo apresentou o mesmo tempo nas duas situações."
+    )

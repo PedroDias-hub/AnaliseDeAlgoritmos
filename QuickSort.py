@@ -1,46 +1,100 @@
-def quickSort(lista, chave=None, reverso=False):
-
-    dados = lista.copy()
-
-    def valor(item):
-        return item[chave] if chave else item
-
-    def ordenar(esquerda, direita):
-
-        if esquerda >= direita:
-            return
-
-        pivo = valor(dados[direita])
-        indice = esquerda
-
-        for i in range(esquerda, direita):
-
-            if not reverso:
-                deveTrocar = valor(dados[i]) <= pivo
-            else:
-                deveTrocar = valor(dados[i]) >= pivo
-
-            if deveTrocar:
-                dados[indice], dados[i] = dados[i], dados[indice]
-                indice += 1
-
-        dados[indice], dados[direita] = dados[direita], dados[indice]
-
-        ordenar(esquerda, indice - 1)
-        ordenar(indice + 1, direita)
-
-    ordenar(0, len(dados) - 1)
-
-    return dados
+import time
 
 
-if __name__ == '__main__':
-    numeros = [5, 2, 8, 1, 9, 3]
-    print(quickSort(numeros))
+def quick_sort(dados, coluna):
 
-    pessoas = [
-        {'nome': 'Ana', 'idade': 30},
-        {'nome': 'Bia', 'idade': 22}
-    ]
+    if len(dados) <= 1:
+        return dados.copy()
 
-    print(quickSort(pessoas, chave='idade'))
+    pivo = dados[len(dados) // 2][coluna]
+
+    menores = []
+    iguais = []
+    maiores = []
+
+    for registro in dados:
+
+        if registro[coluna] < pivo:
+            menores.append(registro)
+
+        elif registro[coluna] > pivo:
+            maiores.append(registro)
+
+        else:
+            iguais.append(registro)
+
+    return (
+        quick_sort(menores, coluna)
+        + iguais
+        + quick_sort(maiores, coluna)
+    )
+
+
+inicio = time.perf_counter()
+
+resultado_inverso = quick_sort(dados, coluna)
+
+fim = time.perf_counter()
+
+tempo_inverso = fim - inicio
+
+
+inicio = time.perf_counter()
+
+resultado_aleatorio = quick_sort(dados_aleatorios, coluna)
+
+fim = time.perf_counter()
+
+tempo_aleatorio = fim - inicio
+
+
+resultados.append([
+    "Quick Sort",
+    tempo_inverso,
+    tempo_aleatorio
+])
+
+
+diferenca = tempo_inverso - tempo_aleatorio
+
+
+print("QUICK SORT")
+print()
+
+print(
+    f"Simulação 1 - Inversamente ordenada: "
+    f"{tempo_inverso:.2e} segundos"
+)
+
+print(
+    f"Simulação 2 - Aleatória:              "
+    f"{tempo_aleatorio:.2e} segundos"
+)
+
+print()
+
+print(
+    f"Diferença entre os tempos: "
+    f"{abs(diferenca):.2e} segundos"
+)
+
+
+if diferenca > 0:
+
+    print(
+        f"O algoritmo gastou {diferenca:.2e} segundos a mais "
+        f"na situação inversamente ordenada."
+    )
+
+elif diferenca < 0:
+
+    print(
+        f"O algoritmo gastou {abs(diferenca):.2e} segundos a mais "
+        f"na situação aleatória."
+    )
+
+else:
+
+    print(
+        "O algoritmo apresentou o mesmo tempo nas duas situações."
+    )

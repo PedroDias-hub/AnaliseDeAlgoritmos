@@ -1,29 +1,74 @@
-def bubbleSort(lista, chave=None, reverso=False):
+import time
 
-    dados = lista.copy()
-    n = len(dados)
+resultados = [
+    ["Algoritmo", "Inversamente ordenada", "Aleatória"],
+]
 
-    def valor(item):
-        return item[chave] if chave else item
+def bubble_sort(dados):
 
-    for i in range(n - 1):
-        trocou = False
-        for j in range(n - 1 - i):
-            a = valor(dados[j])
-            b = valor(dados[j + 1])
-            deveTrocar = a > b if not reverso else a < b
-            if deveTrocar:
+    dados = dados.copy()
+
+    for i in range(len(dados) - 1):
+
+        for j in range(len(dados) - 1 - i):
+
+            if dados[j][coluna] > dados[j + 1][coluna]:
+
                 dados[j], dados[j + 1] = dados[j + 1], dados[j]
-                trocou = True
-        if not trocou:
-            break
 
     return dados
 
 
-if __name__ == '__main__':
-    numeros = [5, 2, 8, 1, 9, 3]
-    print(bubbleSort(numeros))
+inicio = time.perf_counter()
 
-    pessoas = [{'nome': 'Ana', 'idade': 30}, {'nome': 'Bia', 'idade': 22}]
-    print(bubbleSort(pessoas, chave='idade'))
+resultado_inverso = bubble_sort(dados)
+
+fim = time.perf_counter()
+
+tempo_inverso = fim - inicio
+
+
+inicio = time.perf_counter()
+
+resultado_aleatorio = bubble_sort(dados_aleatorios)
+
+fim = time.perf_counter()
+
+tempo_aleatorio = fim - inicio
+
+
+resultados.append([
+    "Bubble Sort",
+    tempo_inverso,
+    tempo_aleatorio
+])
+
+
+diferenca = tempo_inverso - tempo_aleatorio
+
+
+print("BUBBLE SORT")
+print()
+print(f"Simulação 1 - Inversamente ordenada: {tempo_inverso:.2e} segundos")
+print(f"Simulação 2 - Aleatória:              {tempo_aleatorio:.2e} segundos")
+print()
+print(f"Diferença entre os tempos: {abs(diferenca):.2e} segundos")
+
+
+if diferenca > 0:
+
+    print(
+        f"O algoritmo gastou {diferenca:.2e} segundos a mais "
+        f"na situação inversamente ordenada."
+    )
+
+elif diferenca < 0:
+
+    print(
+        f"O algoritmo gastou {abs(diferenca):.2e} segundos a mais "
+        f"na situação aleatória."
+    )
+
+else:
+
+    print("O algoritmo apresentou o mesmo tempo nas duas situações.")
